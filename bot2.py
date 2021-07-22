@@ -188,35 +188,8 @@ def checkEventUpdate():
             get_kills(player, playerId)
             #call to display last kill?
 
-        
-        
-
-
 def main():
-    #playerId = get_player_id("Mushii")
-    #print(playerId)
-    #get_kills("Mushii", playerId)
-    #print(f.checksave('test'))
-    #f.savefile('test','sdasdasd')
-    #alist = {}
-    #alist['username'] = []
-    #alist['playerid'] = []
-    #alist['kills'] = []
 
-    #alist['username'].append("Mushii")
-    #alist['playerid'].append("Mushii")
-    #alist['playerid'].append("Mushii")
-    #alist = {}
-    
-
-    #alist['username']= 'Mushii'
-    #alist['playerid']= 'QPELoDHRQwWI3-yhzAGYmA'
-
-    #alist['kills'] = {'eventid': '123'}
-    #alist['kills']['killer'] = {
-    #    'wep': 'pito'
-    #    }
-    #print(alist['kills']['killer']['wep'])
     print('hello')
     checkEventUpdate()
     
@@ -224,10 +197,7 @@ def main():
 
     
     
-    #with open('test.txt', 'w') as outfile:
-    #    json.dump(alist, outfile)
 
-    #print(json.dumps(alist, indent=4))
 
 
         
