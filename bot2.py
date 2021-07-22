@@ -3,7 +3,7 @@ import discord
 import urllib.request
 import json
 import ast
-import fileio
+import fileio as f
 from dotenv import load_dotenv
 from discord.ext import commands
 
@@ -45,8 +45,26 @@ async def ping(ctx):
     
 @bot.command()
 async def track(ctx, playername):
-    await ctx.send('test success ' + playername)
+    #checkTracking = track_player(playername)
+    if (f.checksave(playername)):
+        await ctx.send('Already tracking: ' + playername)
+    else:
+        f.savefile(playername, get_player_id(playername))
+        await ctx.send('Now tracking: ' + playername)
+    #await ctx.send('Now tracking albion player: ' + playername + ' with id: ')
 
+@bot.command()
+async def clearplayers(ctx):
+    f.clearfiles()
+    await ctx.send('cleared!')
+
+#def track_player(username):
+#    print('in track player')
+#    if (f.checksave(username)):
+#        return True
+#    else:
+#        f.savefile(username, 'this is a test')
+#        return False
 
 def get_player_id(username):
     url = 'https://gameinfo.albiononline.com/api/gameinfo/search?q=' + username
@@ -57,15 +75,20 @@ def get_player_id(username):
     else:
         print("Error receiving data", operUrl.getcode())
 
+    u_id = ''
     for user in jsonData['players']:
-        u_id = user.get('Id')
-        u_Name = user.get('Name')
-        print(u_id)
-        print(u_Name)
+        #u_id = user.get('Id')
+        u_name = user.get('Name')
+        #print(u_id)
+        print(u_name)
         print()
-        if (u_id == 'QPELoDHRQwWI3-yhzAGYmA'):
-            print('Found real mushii')
-            return u_id
+        #if (u_id == 'QPELoDHRQwWI3-yhzAGYmA'):
+        if (u_name == username):
+            print('Found user ' + u_id)
+            u_id = user.get('Id')
+
+    print('returning id ' + u_id)
+    return u_id
 
 def get_kills(playerId):
     url = 'https://gameinfo.albiononline.com/api/gameinfo/players/' + playerId + '/kills'
@@ -87,9 +110,11 @@ def get_kills(playerId):
 def main():
     playerId = get_player_id("Mushii")
     print(playerId)
-    get_kills(playerId)
-
-
+    #get_kills(playerId)
+    #print(f.checksave('test'))
+    #f.savefile('test','sdasdasd')
+    print('hello')
+    
 
 
     
