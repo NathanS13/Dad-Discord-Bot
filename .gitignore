@@ -6,3 +6,7 @@ __pycache__/fileio.cpython-39.pyc
 bot.py
 
 .env
+
+itemimage/
+
+__pycache__/
