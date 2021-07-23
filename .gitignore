@@ -10,3 +10,5 @@ bot.py
 itemimage/
 
 __pycache__/
+
+players/

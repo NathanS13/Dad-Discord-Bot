@@ -43,12 +43,10 @@ async def on_member_join(member):
 async def on_member_remove(member):
     print(f'{member} has left the server.')
 
-@tasks.loop(minutes=1)
+@tasks.loop(minutes=5)
 async def test():
     channel = bot.get_channel(816437844507492365)
-    await channel.send("Updating List!")
     playerUpdates = checkEventUpdate()
-    await channel.send("Done Updating List!")
 
 
     for x in range(0, len(playerUpdates), 5):
@@ -56,7 +54,6 @@ async def test():
 
         i.pullImages(playerUpdates[x+3])
         i.pullImages(playerUpdates[x+4])
-        print("done with image pull")
         image1 = i.generateImage(playerUpdates[x+3])
         image2 = i.generateImage(playerUpdates[x+4])
         finalImage = i.mergeKill(image1, image2, playerUpdates[x+1], playerUpdates[x+2])
