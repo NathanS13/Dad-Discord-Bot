@@ -45,7 +45,7 @@ async def on_member_remove(member):
 
 @tasks.loop(minutes=5)
 async def test():
-    channel = bot.get_channel(816437844507492365)
+    channel = bot.get_channel(861996836435918889)
     playerUpdates = checkEventUpdate()
 
 
@@ -80,7 +80,8 @@ async def before():
 @bot.command()
 async def ping(ctx):
     await ctx.send('pong')
-    await ctx.send(file=discord.File('test3.png'))
+    #await ctx.send(file=discord.File('test3.png'))
+    checkEventUpdate()
     
 @bot.command()
 async def track(ctx, playername):
