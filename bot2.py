@@ -43,13 +43,13 @@ async def on_member_join(member):
 async def on_member_remove(member):
     print(f'{member} has left the server.')
 
+def checkMushy(ctx):
+    return ctx.message.author.id == 118156033720844291
+
 @bot.command()
 async def commands(ctx, message):
     await ctx.send('Hey son, I saw you needed help.\n\n Here what I can do for you: \n\n .track playername')
     #await ctx.send(file=discord.File('test3.png'))
-
-def checkMushy(ctx):
-    return ctx.message.author.id == 118156033720844291
 
 @tasks.loop(minutes=5)
 async def test():
