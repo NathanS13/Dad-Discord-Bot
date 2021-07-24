@@ -39,10 +39,17 @@ def savefile(filename, data):
     f.write(str(filename) + "\n")
     f.close()
 
-def savefile2(filename, eventid, alist, blist, victimName):
+def savefile2(filename, eventid, alist, blist, victimName, killerAvgIP, victimAvgIP, killfame):
     f = open("players/" + filename + ".txt", "a")
     f.write(str(eventid) + "\n")
     f.write(str(victimName) + "\n")
+    f.write(str(killfame) + "\n") #
+    f.write(str(killerAvgIP) + "\n") #
+    f.write(str(victimAvgIP) + "\n") #
+
+    #f.write(str(killMoney) + "\n") #
+    #f.write(str(victimMoney) + "\n") #
+
     f.write(str(alist) + "\n")
     f.write(str(blist) + "\n")
     f.close()
@@ -65,7 +72,7 @@ def getlastevent(filename):
     dataLines = f.read()
     dataList = dataLines.splitlines()
     f.close()
-    return(dataList[-4])
+    return(dataList[-7])
 
 def getPlayerId(filename):
     f = open("players/" + filename + ".txt", "r")
@@ -81,6 +88,22 @@ def getListOfTrack():
     f.close()
     return(dataList)
 
+def forcePlayerUpdate(filename):
+    f = open("players/" + filename + ".txt", "r")
+    dataLines = f.read()
+    f.close()
+
+    f = open("players/" + filename + ".txt", "w")
+
+    dataList = dataLines.splitlines()
+    dataList[-7] = '0'
+    newDataLines = dataList
+    for line in newDataLines:
+        f.write(str(line) + "\n")
+    f.close()
+    return(dataList)
+
+#forcePlayerUpdate('Mushii')
 #clearfiles()
 #print(getlastline('Mushii', 2))
 #print(getlastline('Mushii', 1))
