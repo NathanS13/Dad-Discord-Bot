@@ -72,7 +72,7 @@ def getlastevent(filename):
     g = open("players/" + filename + ".txt", "r")
     count = f.readlines()
     dataLines = g.read()
-    print("file " + filename + " " + str(len(dataLines)))
+    #print("file " + filename + " " + str(len(dataLines)))
     if (len(count) >= 8):
         dataList = dataLines.splitlines()
         f.close()

@@ -48,9 +48,9 @@ def checkMushy(ctx):
 
 @tasks.loop(minutes=5)
 async def test():
-    channel = bot.get_channel(816437844507492365) #861996836435918889 aionios. current test
-    playerUpdates = checkEventUpdate()
-
+    channel = bot.get_channel(868319514566230057) #861996836435918889 aionios. current test
+    playerUpdates = checkEventUpdate()            #868319514566230057 tkx
+                                                  #816437844507492365 test
     print('player update: \n' )
     print(playerUpdates)
     for x in range(0, len(playerUpdates), 8):
@@ -94,10 +94,11 @@ async def ping(ctx):
 
 @bot.command()
 @commands.check(checkMushy)
-async def clear(ctx, amount=5):
+async def clear(ctx, amount=10):
     await ctx.channel.purge(limit=amount)
 
 @bot.command()
+@commands.check(checkMushy)
 async def track(ctx, playername):
     #checkTracking = track_player(playername)
     if (f.checksave(playername)):
@@ -156,7 +157,7 @@ def get_player_id(username):
     return u_id
 
 def get_kills(username, playerId):
-    print("in get kills")
+    print("Looking up kills for " + username)
     url = 'https://gameinfo.albiononline.com/api/gameinfo/players/' + playerId + '/kills'
     operUrl = urllib.request.urlopen(url)
     if(operUrl.getcode()==200):
@@ -371,7 +372,7 @@ def checkEventUpdate():
         tempLastEvent = f.getlastevent(player)
         if (tempLastEvent != -1):
             print('checking latest for ' + player + ' ' + str(jsonData[0]['EventId']))
-            print('last even for ' + player + ' ' + tempLastEvent)
+            print('last event for ' + player + ' ' + tempLastEvent)
         if (tempLastEvent != -1 and str(jsonData[0]['EventId']) != tempLastEvent):
             f.clearfile(player)
             f.savefile(player, playerId)
@@ -447,5 +448,6 @@ def main():
 #https://render.albiononline.com/v1/item/T4_OFF_SHIELD.png
 
 main()
-test.start()
+
 bot.run(TOKEN)
+test.start()
