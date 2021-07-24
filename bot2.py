@@ -49,6 +49,7 @@ def checkMushy(ctx):
 @tasks.loop(minutes=5)
 async def test():
     channel = bot.get_channel(868319514566230057) #861996836435918889 aionios. current test
+    channel2 = bot.get_channel(861996836435918889)
     playerUpdates = checkEventUpdate()            #868319514566230057 tkx
                                                   #816437844507492365 test
     print('player update: \n' )
@@ -66,6 +67,7 @@ async def test():
                     finalImage.save(image_binary, 'PNG')
                     image_binary.seek(0)
                     await channel.send(file=discord.File(fp=image_binary, filename='finalImage.png'))
+                    await channel2.send(file=discord.File(fp=image_binary, filename='finalImage.png'))
     playerUpdates = []
 
 
