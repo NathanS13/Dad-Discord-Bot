@@ -68,10 +68,12 @@ async def test():
         image2 = i.generateImage(playerUpdates[x+7])
         finalImage = i.mergeKill(image1, image2, playerUpdates[x+1], playerUpdates[x+5],
                                 playerUpdates[x+2], playerUpdates[x+3], playerUpdates[x+4]) #send a list idiot
+        await channel.send('Good job kiddo you killed ' + playerUpdates[x+5])
         with io.BytesIO() as image_binary:
                     finalImage.save(image_binary, 'PNG')
                     image_binary.seek(0)
                     await channel.send(file=discord.File(fp=image_binary, filename='finalImage.png'))
+        await channel2.send('Good job kiddo you killed ' + playerUpdates[x+5])
         with io.BytesIO() as image_binary:
                     finalImage.save(image_binary, 'PNG')
                     image_binary.seek(0)
