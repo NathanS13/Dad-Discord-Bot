@@ -108,6 +108,15 @@ def forcePlayerUpdate(filename):
     f.close()
     return(dataList)
 
+def checkLineCount(filename):
+    f = open("players/" + filename + ".txt", "r")
+    count = f.readlines()
+    if (count >= 1):
+        return True
+    else:
+        return False
+
+    return -1
 #forcePlayerUpdate('Mushii')
 #clearfiles()
 #print(getlastline('Mushii', 2))

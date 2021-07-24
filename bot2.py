@@ -106,16 +106,22 @@ async def clear(ctx, amount=10):
 @commands.check(checkMushy)
 async def track(ctx, playername):
     #checkTracking = track_player(playername)
-    if (f.checksave(playername)):
+    if (f.checksave(playername) and f.checkLineCount(playername))):
         await ctx.send('Already tracking: ' + playername)
     else:
         await ctx.send('Looking up: ' + playername)
         playerid = get_player_id(playername)
-        f.savefile(playername, playerid)
-        await ctx.send('Found Albion player!: ' + playername)
-        await ctx.send('Saving last few pvp kills..')
-        get_kills(playername, playerid)
-        await ctx.send('Now tracking: ' + playername)
+        if (playerid == ''):
+            await ctx.send("Couldn't find Albion player. Usernames are CaSe SeNsItIvE..")
+        else if (f.checkLineCount(playername)):
+            f.savefile(playername, playerid)
+            await ctx.send('Found Albion player!: ' + playername)
+            await ctx.send('Saving last few pvp kills..')
+            get_kills(playername, playerid)
+            await ctx.send('Now tracking: ' + playername)
+        else:
+            await ctx.send("Unexpected Error")
+
     #await ctx.send('Now tracking albion player: ' + playername + ' with id: ')
 
 @bot.command()
