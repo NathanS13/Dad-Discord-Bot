@@ -93,7 +93,7 @@ async def before():
     await bot.wait_until_ready()
 
 @bot.command()
-@commands.check(checkMushy)
+#@commands.check(checkMushy)
 async def ping(ctx):
     await ctx.send('pong')
     await ctx.send('mush id: ' + str(ctx.message.author.id))
@@ -103,12 +103,12 @@ async def ping(ctx):
     #checkEventUpdate()
 
 @bot.command()
-@commands.check(checkMushy)
+#@commands.check(checkMushy)
 async def clear(ctx, amount=10):
     await ctx.channel.purge(limit=amount)
 
 @bot.command()
-@commands.check(checkMushy)
+#@commands.check(checkMushy)
 async def track(ctx, playername):
     #checkTracking = track_player(playername)
     if (f.checksave(playername) and f.checkLineCount(playername)):
@@ -136,7 +136,7 @@ async def clearplayers(ctx):
     await ctx.send('cleared!')
 
 @bot.command()
-@commands.check(checkMushy)
+#@commands.check(checkMushy)
 async def forceUpdate(ctx, playername='Mushii'):
     f.forcePlayerUpdate(playername)
     await test()
