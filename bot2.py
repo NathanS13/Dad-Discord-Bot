@@ -106,7 +106,7 @@ async def clear(ctx, amount=10):
 @commands.check(checkMushy)
 async def track(ctx, playername):
     #checkTracking = track_player(playername)
-    if (f.checksave(playername) and f.checkLineCount(playername))):
+    if (f.checksave(playername) and f.checkLineCount(playername)):
         await ctx.send('Already tracking: ' + playername)
     else:
         await ctx.send('Looking up: ' + playername)
