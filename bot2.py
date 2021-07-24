@@ -367,10 +367,12 @@ def checkEventUpdate():
         else:
             print("Error receiving data", operUrl.getcode())
 
-        print('checking latest for ' + player + ' ' + str(jsonData[0]['EventId']))
+        #print('checking latest for ' + player + ' ' + str(jsonData[0]['EventId']))
         tempLastEvent = f.getlastevent(player)
-        print('last even for ' + player + ' ' + tempLastEvent)
-        if (str(jsonData[0]['EventId']) != tempLastEvent):
+        if (tempLastEvent != -1):
+            print('checking latest for ' + player + ' ' + str(jsonData[0]['EventId']))
+            print('last even for ' + player + ' ' + tempLastEvent)
+        if (tempLastEvent != -1 and str(jsonData[0]['EventId']) != tempLastEvent):
             f.clearfile(player)
             f.savefile(player, playerId)
             get_kills(player, playerId)

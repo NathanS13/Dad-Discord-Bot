@@ -69,10 +69,15 @@ def getlastline(filename, lastlinetoretrieve):
 
 def getlastevent(filename):
     f = open("players/" + filename + ".txt", "r")
-    dataLines = f.read()
-    dataList = dataLines.splitlines()
-    f.close()
-    return(dataList[-7])
+    g = open("players/" + filename + ".txt", "r")
+    count = f.readlines()
+    dataLines = g.read()
+    print("file " + filename + " " + str(len(dataLines)))
+    if (len(count) >= 8):
+        dataList = dataLines.splitlines()
+        f.close()
+        return(dataList[-7])
+    return -1
 
 def getPlayerId(filename):
     f = open("players/" + filename + ".txt", "r")
