@@ -111,7 +111,7 @@ def forcePlayerUpdate(filename):
 def checkLineCount(filename):
     f = open("players/" + filename + ".txt", "r")
     count = f.readlines()
-    if (count >= 1):
+    if (len(count) >= 1):
         return True
     else:
         return False
