@@ -112,7 +112,7 @@ async def clear(ctx, amount=10):
 async def getTrackList(ctx):
     with open("players/tracklist.txt", "rb") as file:
         await ctx.send("Current Track List:", file=discord.File(file, "tracklist.txt"))
-        tracklist = printTrackList()
+        tracklist = f.printTrackList()
         for line in tracklist:
             await ctx.send(line)
 
