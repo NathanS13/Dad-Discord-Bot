@@ -157,7 +157,7 @@ def mergeKill(image1, image2, playername, victimname, fame, killip, victimip):
     #image_editable.text((1000,7.5), title_text, (54, 69, 79), font=title_font)
 
 
-    background.show()
+    #background.show()
     #background.save('test3.png')
     return background
 

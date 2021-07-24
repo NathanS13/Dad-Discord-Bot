@@ -449,6 +449,5 @@ def main():
 #https://render.albiononline.com/v1/item/T4_OFF_SHIELD.png
 
 main()
-
-bot.run(TOKEN)
 test.start()
+bot.run(TOKEN)
