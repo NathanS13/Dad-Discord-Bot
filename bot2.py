@@ -44,7 +44,7 @@ async def on_member_remove(member):
     print(f'{member} has left the server.')
 
 @bot.command()
-async def help(ctx, message):
+async def commands(ctx, message):
     await ctx.send('Hey son, I saw you needed help.\n\n Here what I can do for you: \n\n .track playername')
     #await ctx.send(file=discord.File('test3.png'))
 
