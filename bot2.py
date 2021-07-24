@@ -48,7 +48,7 @@ def checkMushy(ctx):
 
 @tasks.loop(minutes=5)
 async def test():
-    channel = bot.get_channel(868319514566230057) #861996836435918889 aionios. current test
+    channel = bot.get_channel(816437844507492365) #861996836435918889 aionios. current test
     playerUpdates = checkEventUpdate()            #868319514566230057 tkx
                                                   #816437844507492365 test
     print('player update: \n' )
@@ -373,6 +373,7 @@ def checkEventUpdate():
         if (tempLastEvent != -1):
             print('checking latest for ' + player + ' ' + str(jsonData[0]['EventId']))
             print('last event for ' + player + ' ' + tempLastEvent)
+        #add a way to initialize a first kill for a player here!!!!
         if (tempLastEvent != -1 and str(jsonData[0]['EventId']) != tempLastEvent):
             f.clearfile(player)
             f.savefile(player, playerId)
