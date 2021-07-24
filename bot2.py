@@ -48,7 +48,7 @@ def checkMushy(ctx):
 
 @tasks.loop(minutes=5)
 async def test():
-    channel = bot.get_channel(816437844507492365) #861996836435918889 aionios. current test
+    channel = bot.get_channel(868319514566230057) #861996836435918889 aionios. current test
     playerUpdates = checkEventUpdate()            #868319514566230057 tkx
                                                   #816437844507492365 test
     print('player update: \n' )
