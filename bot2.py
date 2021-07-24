@@ -43,7 +43,7 @@ async def on_member_join(member):
 async def on_member_remove(member):
     print(f'{member} has left the server.')
 
-@bot.command(alias='dad help')
+@bot.command(alias='dadhelp')
 async def help(ctx, message):
     await ctx.send('Hey son, I saw you needed help.\n\n Here what I can do for you: \n\n .track playername')
     #await ctx.send(file=discord.File('test3.png'))
