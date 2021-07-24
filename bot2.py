@@ -109,6 +109,15 @@ async def clear(ctx, amount=10):
 
 @bot.command()
 #@commands.check(checkMushy)
+async def getTrackList(ctx):
+    with open("players/tracklist.txt", "rb") as file:
+        await ctx.send("Current Track List:", file=discord.File(file, "tracklist.txt"))
+        tracklist = printTrackList()
+        for line in tracklist:
+            await ctx.send(line)
+
+@bot.command()
+#@commands.check(checkMushy)
 async def track(ctx, playername):
     #checkTracking = track_player(playername)
     if (f.checksave(playername) and f.checkLineCount(playername)):

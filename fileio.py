@@ -117,6 +117,12 @@ def checkLineCount(filename):
         return False
 
     return -1
+
+def printTrackList():
+    f = open("players/tracklist.txt", "r")
+    dataLines = f.read()
+    dataList = dataLines.splitlines()
+    return(dataList)
 #forcePlayerUpdate('Mushii')
 #clearfiles()
 #print(getlastline('Mushii', 2))
