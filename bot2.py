@@ -67,6 +67,9 @@ async def test():
                     finalImage.save(image_binary, 'PNG')
                     image_binary.seek(0)
                     await channel.send(file=discord.File(fp=image_binary, filename='finalImage.png'))
+        with io.BytesIO() as image_binary:
+                    finalImage.save(image_binary, 'PNG')
+                    image_binary.seek(0)
                     await channel2.send(file=discord.File(fp=image_binary, filename='finalImage.png'))
     playerUpdates = []
 
