@@ -47,8 +47,8 @@ def checkMushy(ctx):
     return ctx.message.author.id == 118156033720844291
 
 @bot.command()
-async def dadhelp(ctx, message):
-    await ctx.send('Hey son, I saw you needed help.\n\n Here what I can do for you: \n\n .track playername')
+async def dadhelp(ctx):
+    await ctx.send('Hey son, I saw you needed help.\n\n Here\'s what I can do for you: \n .track playername')
     #await ctx.send(file=discord.File('test3.png'))
 
 @tasks.loop(minutes=5)
