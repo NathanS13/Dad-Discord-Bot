@@ -113,7 +113,7 @@ async def track(ctx, playername):
         playerid = get_player_id(playername)
         if (playerid == ''):
             await ctx.send("Couldn't find Albion player. Usernames are CaSe SeNsItIvE..")
-        else if (f.checkLineCount(playername)):
+        elif (playerid != ''):
             f.savefile(playername, playerid)
             await ctx.send('Found Albion player!: ' + playername)
             await ctx.send('Saving last few pvp kills..')
