@@ -68,12 +68,12 @@ async def test():
         image2 = i.generateImage(playerUpdates[x+7])
         finalImage = i.mergeKill(image1, image2, playerUpdates[x+1], playerUpdates[x+5],
                                 playerUpdates[x+2], playerUpdates[x+3], playerUpdates[x+4]) #send a list idiot
-        await channel.send('Good job kiddo you killed ' + playerUpdates[x+5])
+        #await channel.send('Good job kiddo you killed ' + playerUpdates[x+5])
         with io.BytesIO() as image_binary:
                     finalImage.save(image_binary, 'PNG')
                     image_binary.seek(0)
                     #await channel.send(file=discord.File(fp=image_binary, filename='finalImage.png'))
-        await channel2.send('Good job kiddo you killed ' + playerUpdates[x+5])
+        #await channel2.send('Good job kiddo you killed ' + playerUpdates[x+5])
         with io.BytesIO() as image_binary:
                     finalImage.save(image_binary, 'PNG')
                     image_binary.seek(0)
@@ -180,12 +180,25 @@ async def forceUpdate2(ctx, playername='Mushii'):
 
 def get_player_id(username):
     url = 'https://gameinfo.albiononline.com/api/gameinfo/search?q=' + username
-    operUrl = urllib.request.urlopen(url)
-    if(operUrl.getcode()==200):
-        data = operUrl.read()
-        jsonData = json.loads(data)
-    else:
-        print("Error receiving data", operUrl.getcode())
+    #operUrl = urllib.request.urlopen(url)
+    #if(operUrl.getcode()==200):
+    #    data = operUrl.read()
+    #    jsonData = json.loads(data)
+    #else:
+    #    print("Error receiving data", operUrl.getcode())
+
+    try:
+        operUrl = urllib.request.urlopen(url)
+        if(operUrl.getcode()==200):
+            data = operUrl.read()
+            jsonData = json.loads(data)
+    except HTTPError as e:
+        if e.code == 502:
+            operUrl = urllib.request.urlopen(url)
+        else:
+            print('Failure opening link!')
+            return ''
+
 
     #could be bad code. Duplicate names like Mushii will grab last
     #doesnt appear to be an issue for other look ups. I did recreate
@@ -416,7 +429,7 @@ def checkEventUpdate():
         #print('checking latest for ' + player + ' ' + str(jsonData[0]['EventId']))
         #add error check here for a failed json fetch
 
-        if (jsonData[0]['EventId']):
+        if (jsonData != []):
             jsonEventId = jsonData[0]['EventId']
 
             tempLastEvent = int(f.getlastevent(player))
