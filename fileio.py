@@ -77,14 +77,21 @@ def getlastevent(filename):
         dataList = dataLines.splitlines()
         f.close()
         return(dataList[-7])
-    return -1
+
+    elif (len(count) < 8 and len(count) > 0):
+        return 1
+    else:
+        return -1
 
 def getPlayerId(filename):
     f = open("players/" + filename + ".txt", "r")
     dataLines = f.read()
     dataList = dataLines.splitlines()
     f.close()
-    return(dataList[0])
+    if (len(dataList) == 0):
+        return 0
+    else:
+        return(dataList[0])
 
 def getListOfTrack():
     f = open("players/tracklist.txt", "r")

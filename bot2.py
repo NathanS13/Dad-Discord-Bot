@@ -72,12 +72,12 @@ async def test():
         with io.BytesIO() as image_binary:
                     finalImage.save(image_binary, 'PNG')
                     image_binary.seek(0)
-                    await channel.send(file=discord.File(fp=image_binary, filename='finalImage.png'))
+                    #await channel.send(file=discord.File(fp=image_binary, filename='finalImage.png'))
         await channel2.send('Good job kiddo you killed ' + playerUpdates[x+5])
         with io.BytesIO() as image_binary:
                     finalImage.save(image_binary, 'PNG')
                     image_binary.seek(0)
-                    await channel2.send(file=discord.File(fp=image_binary, filename='finalImage.png'))
+                    #await channel2.send(file=discord.File(fp=image_binary, filename='finalImage.png'))
     playerUpdates = []
 
 
@@ -114,9 +114,9 @@ async def clear(ctx, amount=10):
 async def getTrackList(ctx):
     with open("players/tracklist.txt", "rb") as file:
         await ctx.send("Current Track List:", file=discord.File(file, "tracklist.txt"))
-        tracklist = f.printTrackList()
-        for line in tracklist:
-            await ctx.send(line)
+        #tracklist = f.printTrackList()
+        #for line in tracklist:
+        #    await ctx.send(line)
 
 @bot.command()
 #@commands.check(checkMushy)
@@ -124,6 +124,10 @@ async def track(ctx, playername):
     #checkTracking = track_player(playername)
     if (f.checksave(playername) and f.checkLineCount(playername)):
         await ctx.send('Already tracking: ' + playername)
+
+    elif (f.checksave(playername) and not f.checkLineCount(playername)):
+        await ctx.send('I see an issue with ' + playername + '\'s tracking.. Please try using the command \".track ' + playername + '\" again.')
+        await untrack(ctx, playername)
     else:
         await ctx.send('Looking up: ' + playername)
         playerid = get_player_id(playername)
@@ -141,8 +145,13 @@ async def track(ctx, playername):
     #await ctx.send('Now tracking albion player: ' + playername + ' with id: ')
 
 @bot.command()
+async def untrack(ctx, playername):
+    f.clearfile(playername)
+    await ctx.send('Cleared player ' + playername + "!")
+
+@bot.command()
 @commands.check(checkMushy)
-async def clearplayers(ctx):
+async def clearplayers_remove_all_warning(ctx):
     f.clearfiles()
     await ctx.send('cleared!')
 
@@ -150,6 +159,13 @@ async def clearplayers(ctx):
 #@commands.check(checkMushy)
 async def forceUpdate(ctx, playername='Mushii'):
     f.forcePlayerUpdate(playername)
+    await test()
+    #await ping(ctx)
+    await ctx.send('update sent')
+
+@bot.command()
+#@commands.check(checkMushy)
+async def forceUpdate2(ctx, playername='Mushii'):
     await test()
     #await ping(ctx)
     await ctx.send('update sent')
@@ -386,55 +402,62 @@ def checkEventUpdate():
     for player in playerList:
 
         playerId = f.getPlayerId(player)
+        if (playerId == 0):
+            continue
 
         url = 'https://gameinfo.albiononline.com/api/gameinfo/players/' + playerId + '/kills'
         operUrl = urllib.request.urlopen(url)
-        if(operUrl.getcode()==200):
+        if (operUrl.getcode()==200):
             data = operUrl.read()
             jsonData = json.loads(data)
         else:
             print("Error receiving data", operUrl.getcode())
 
         #print('checking latest for ' + player + ' ' + str(jsonData[0]['EventId']))
-        tempLastEvent = f.getlastevent(player)
-        if (tempLastEvent != -1):
-            print('checking latest for ' + player + ' ' + str(jsonData[0]['EventId']))
-            print('last event for ' + player + ' ' + tempLastEvent)
-        #add a way to initialize a first kill for a player here!!!!
-        if (tempLastEvent != -1 and str(jsonData[0]['EventId']) != tempLastEvent):
-            f.clearfile(player)
-            f.savefile(player, playerId)
-            get_kills(player, playerId)
-            #add check wealth here
-            #call to display last kill?
-            tempLastKillerName = f.getlastline(player, 6)
+        #add error check here for a failed json fetch
 
-            tempLastKillFame = f.getlastline(player, 5) #
-            tempLastKillIP = f.getlastline(player, 4) #
-            tempLastVictimIP = f.getlastline(player, 3) #
+        if (jsonData[0]['EventId']):
+            jsonEventId = jsonData[0]['EventId']
 
-            #tempLastKillMoney = f.getlastline(player, 4)
-            #tempLastKillVictimMoney = f.getlastline(player, 3)
+            tempLastEvent = int(f.getlastevent(player))
+            if (tempLastEvent != -1):
+                print('last JSON for ' + player + ' ' + str(jsonEventId))
+                print('last FILE event for ' + player + ' ' + str(tempLastEvent))
+                #add a way to initialize a first kill for a player here!!!!
+                if (tempLastEvent != -1 and jsonEventId != tempLastEvent):
+                    f.clearfile(player)
+                    f.savefile(player, playerId)
+                    get_kills(player, playerId)
+                    #add check wealth here
+                    #call to display last kill?
+                    tempLastKillerName = f.getlastline(player, 6)
 
-            tempLastKiller = f.getlastline(player, 2)
-            tempLastVictim = f.getlastline(player, 1)
+                    tempLastKillFame = f.getlastline(player, 5) #
+                    tempLastKillIP = f.getlastline(player, 4) #
+                    tempLastVictimIP = f.getlastline(player, 3) #
+
+                    #tempLastKillMoney = f.getlastline(player, 4)
+                    #tempLastKillVictimMoney = f.getlastline(player, 3)
+
+                    tempLastKiller = f.getlastline(player, 2)
+                    tempLastVictim = f.getlastline(player, 1)
 
 
-            returnlist.append(tempLastEvent)
-            returnlist.append(player)
+                    returnlist.append(tempLastEvent)
+                    returnlist.append(player)
 
-            returnlist.append(tempLastKillFame) #
-            returnlist.append(tempLastKillIP) #
-            returnlist.append(tempLastVictimIP) #
+                    returnlist.append(tempLastKillFame) #
+                    returnlist.append(tempLastKillIP) #
+                    returnlist.append(tempLastVictimIP) #
 
-            #returnlist.append(tempLastKillMoney)
-            #returnlist.append(tempLastKillVictimMoney)
+                    #returnlist.append(tempLastKillMoney)
+                    #returnlist.append(tempLastKillVictimMoney)
 
-            returnlist.append(tempLastKillerName)
-            returnlist.append(tempLastKiller)
-            returnlist.append(tempLastVictim)
-            #print('killer ' + tempLastKiller)
-            #print('victim ' + tempLastVictim)
+                    returnlist.append(tempLastKillerName)
+                    returnlist.append(tempLastKiller)
+                    returnlist.append(tempLastVictim)
+                    #print('killer ' + tempLastKiller)
+                    #print('victim ' + tempLastVictim)
     return returnlist
 
 
