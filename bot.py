@@ -409,13 +409,13 @@ def checkEventUpdate():
 
         #print('checking latest for ' + player + ' ' + str(jsonData[0]['EventId']))
         #add error check here for a failed json fetch
-        print('playername ' + player + ' ' + url)
+        #print('playername ' + player + ' ' + url)
 
         if (jsonData != []):
             jsonEventId = jsonData[0]['EventId']
 
             tempLastEvent = int(f.getlastevent(player))
-            tempLastEvent = 257509874
+            #tempLastEvent = 257509874
             if (tempLastEvent != -1):
                 print('last JSON for ' + player + ' ' + str(jsonEventId))
                 print('last FILE event for ' + player + ' ' + str(tempLastEvent))
