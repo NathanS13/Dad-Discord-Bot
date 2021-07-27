@@ -47,7 +47,7 @@ async def dadhelp(ctx):
 
 @tasks.loop(minutes=5)
 async def test():
-    channel = bot.get_channel(868319514566230057) #861996836435918889 aionios. current test
+    channel = bot.get_channel(816437844507492365) #861996836435918889 aionios. current test
     channel2 = bot.get_channel(861996836435918889)
     playerUpdates = checkEventUpdate()            #868319514566230057 tkx
                                                   #816437844507492365 test
@@ -62,16 +62,16 @@ async def test():
         image2 = i.generateImage(playerUpdates[x+7])
         finalImage = i.mergeKill(image1, image2, playerUpdates[x+1], playerUpdates[x+5],
                                 playerUpdates[x+2], playerUpdates[x+3], playerUpdates[x+4]) #send a list idiot
-        await channel.send('Good job kiddo you killed ' + playerUpdates[x+5])
+        #await channel.send('Good job kiddo you killed ' + playerUpdates[x+5])
         with io.BytesIO() as image_binary:
                     finalImage.save(image_binary, 'PNG')
                     image_binary.seek(0)
                     await channel.send(file=discord.File(fp=image_binary, filename='finalImage.png'))
-        await channel2.send('Good job kiddo you killed ' + playerUpdates[x+5])
+        #await channel2.send('Good job kiddo you killed ' + playerUpdates[x+5])
         with io.BytesIO() as image_binary:
                     finalImage.save(image_binary, 'PNG')
                     image_binary.seek(0)
-                    await channel2.send(file=discord.File(fp=image_binary, filename='finalImage.png'))
+                    #await channel2.send(file=discord.File(fp=image_binary, filename='finalImage.png'))
     playerUpdates = []
 
 @test.before_loop
@@ -194,15 +194,17 @@ def get_player_id(username):
 
     return u_id
 
-def get_kills(username, playerId):
-    print("Looking up kills for " + username)
-    url = 'https://gameinfo.albiononline.com/api/gameinfo/players/' + playerId + '/kills'
-    operUrl = urllib.request.urlopen(url)
-    if(operUrl.getcode()==200):
-        data = operUrl.read()
-        jsonData = json.loads(data)
-    else:
-        print("Error receiving data", operUrl.getcode())
+def get_kills(username, playerId, jsonData=[]):
+
+    if (jsonData == []):
+        print("Looking up kills for " + username)
+        url = 'https://gameinfo.albiononline.com/api/gameinfo/players/' + playerId + '/kills'
+        operUrl = urllib.request.urlopen(url)
+        if(operUrl.getcode()==200):
+            data = operUrl.read()
+            jsonData = json.loads(data)
+        else:
+            print("Error receiving data", operUrl.getcode())
 
 
     alist = []
@@ -407,40 +409,55 @@ def checkEventUpdate():
 
         #print('checking latest for ' + player + ' ' + str(jsonData[0]['EventId']))
         #add error check here for a failed json fetch
+        print('playername ' + player + ' ' + url)
 
         if (jsonData != []):
             jsonEventId = jsonData[0]['EventId']
 
             tempLastEvent = int(f.getlastevent(player))
+            tempLastEvent = 257509874
             if (tempLastEvent != -1):
                 print('last JSON for ' + player + ' ' + str(jsonEventId))
                 print('last FILE event for ' + player + ' ' + str(tempLastEvent))
-                #add a way to initialize a first kill for a player here!!!!
-                if (tempLastEvent != -1 and jsonEventId != tempLastEvent):
+                #add a way to initialize a first kill for a player here!!!! -- think done
+            i = 1
+            while (tempLastEvent != -1 and jsonEventId != tempLastEvent and i != 10):
+            #if (tempLastEvent != -1 and jsonEventId != tempLastEvent):
+                if (i == 1):
                     f.clearfile(player)
                     f.savefile(player, playerId)
-                    get_kills(player, playerId)
-                    #add check wealth here
-                    #call to display last kill?
-                    tempLastKillerName = f.getlastline(player, 6)
-                    tempLastKillFame = f.getlastline(player, 5)
-                    tempLastKillIP = f.getlastline(player, 4)
-                    tempLastVictimIP = f.getlastline(player, 3)
-                    #tempLastKillMoney = f.getlastline(player, 4)
-                    #tempLastKillVictimMoney = f.getlastline(player, 3)
-                    tempLastKiller = f.getlastline(player, 2)
-                    tempLastVictim = f.getlastline(player, 1)
+                    get_kills(player, playerId, jsonData)
+                #add check wealth here
+                #call to display last kill?
+                #if (tempLastEvent != 1)
+                #print('i ' + str(i))
+                tempLastKillerName = f.getlastline(player, (6 + ((i-1) * 7)))
+                tempLastKillFame = f.getlastline(player, (5 + ((i-1) * 7)))
+                tempLastKillIP = f.getlastline(player, (4 + ((i-1) * 7)))
+                tempLastVictimIP = f.getlastline(player, (3 + ((i-1) * 7)))
+                tempLastKiller = f.getlastline(player, (2 + ((i-1) * 7)))
+                tempLastVictim = f.getlastline(player, (1 + ((i-1) * 7)))
 
-                    returnlist.append(tempLastEvent)
-                    returnlist.append(player)
-                    returnlist.append(tempLastKillFame) #
-                    returnlist.append(tempLastKillIP) #
-                    returnlist.append(tempLastVictimIP) #
-                    #returnlist.append(tempLastKillMoney)
-                    #returnlist.append(tempLastKillVictimMoney)
-                    returnlist.append(tempLastKillerName)
-                    returnlist.append(tempLastKiller)
-                    returnlist.append(tempLastVictim)
+                #print('name '+tempLastKillerName)
+                returnlist.insert(0, jsonEventId) #1
+                returnlist.insert(1, player) #2
+                returnlist.insert(2, tempLastKillFame) #3
+                returnlist.insert(3, tempLastKillIP) #4
+                returnlist.insert(4, tempLastVictimIP) #5
+                returnlist.insert(5, tempLastKillerName) #6
+                returnlist.insert(6, tempLastKiller) #7
+                returnlist.insert(7, tempLastVictim) #8
+
+                #if (jsonData[i]['EventId']):
+                #    jsonEventId = jsonData[i]['EventId']
+                i += 1
+                #jsonEventId = tempLastEvent
+                if (tempLastEvent != 1):
+                    jsonEventId = int(f.getlastevent(player, i))
+                else:
+                    jsonEventId = tempLastEvent
+                #print ('my temp last event: ' + str(jsonEventId) + ' json evnt id: ' + str(jsonEventId))
+
     return returnlist
 
 def main():

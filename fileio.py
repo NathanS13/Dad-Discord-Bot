@@ -63,15 +63,19 @@ def getlastline(filename, lastlinetoretrieve):
     f.close()
     return(dataList[-lastlinetoretrieve])
 
-def getlastevent(filename):
+def getlastevent(filename, eventDepth=1):
     f = open("players/" + filename + ".txt", "r")
     g = open("players/" + filename + ".txt", "r")
     count = f.readlines()
     dataLines = g.read()
-    if (len(count) >= 8):
+    #if (eventDepth > 1):
+    #    offset = -1
+    if (len(count) >= (7 * eventDepth)):
+        #print('condition met ' + str(-7 * eventDepth + offset) )
         dataList = dataLines.splitlines()
         f.close()
-        return(dataList[-7])
+        #print('event: ' + dataList[-7 * eventDepth + offset])
+        return(dataList[-7 * eventDepth])
 
     elif (len(count) < 8 and len(count) > 0):
         return 1
