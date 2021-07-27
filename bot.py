@@ -421,7 +421,7 @@ def checkEventUpdate():
                 print('last FILE event for ' + player + ' ' + str(tempLastEvent))
                 #add a way to initialize a first kill for a player here!!!! -- think done
             i = 1
-            while (tempLastEvent != -1 and jsonEventId != tempLastEvent and i != 10):
+            while (tempLastEvent != -1 and jsonEventId != tempLastEvent and jsonEventId != -1 and i != 10):
             #if (tempLastEvent != -1 and jsonEventId != tempLastEvent):
                 if (i == 1):
                     f.clearfile(player)
