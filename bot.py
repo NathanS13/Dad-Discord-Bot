@@ -456,7 +456,7 @@ def checkEventUpdate():
                     jsonEventId = int(f.getlastevent(player, i))
                 else:
                     jsonEventId = tempLastEvent
-                #print ('my temp last event: ' + str(jsonEventId) + ' json evnt id: ' + str(jsonEventId))
+                print ('my temp last event: ' + str(tempLastEvent) + ' json evnt id: ' + str(jsonEventId))
 
     return returnlist
 
