@@ -47,7 +47,7 @@ async def dadhelp(ctx):
 
 @tasks.loop(minutes=5)
 async def test():
-    channel = bot.get_channel(816437844507492365) #861996836435918889 aionios. current test
+    channel = bot.get_channel(868319514566230057) #861996836435918889 aionios. current test
     channel2 = bot.get_channel(861996836435918889)
     playerUpdates = checkEventUpdate()            #868319514566230057 tkx
                                                   #816437844507492365 test
