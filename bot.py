@@ -18,15 +18,22 @@ bot = commands.Bot(command_prefix='.', intents=intents)
 async def on_ready():
     for guild in bot.guilds:
         if guild.name == GUILD:
-            break
+        #    break
+            print('?>?')
 
-    print(
-        f'{bot.user} is connected to the following guild:\n'
-        f'{guild.name}(id: {guild.id})'
-    )
+        print(
+            f'{bot.user} is connected to the following guild:\n'
+            f'{guild.name}(id: {guild.id})'
+        )
 
-    members = '\n - '.join([member.name for member in guild.members])
-    print(f'Guild Members:\n - {members}')
+        members = '\n - '.join([member.name for member in guild.members])
+        #membersid = ' '.join(str([member.id for member in guild.members]))
+        print(f'Guild Members:\n - {members}')
+        #memberlist = storstr(guild.members)
+        #for user in guild.members:
+            #if (str(user) == "Dank Hill#6530"):
+            #print("- " + str(user) + " " + str(user.id))
+            
 
 @bot.event
 async def on_member_join(member):
@@ -85,6 +92,11 @@ async def ping(ctx):
     await ctx.send('mush id: ' + str(ctx.message.author.id))
     await ctx.send('server id: ' + str(ctx.guild.id))
     await ctx.send('channel id: ' + str(ctx.channel.id))
+
+@bot.command()
+#@commands.check(checkMushy)
+async def proud(ctx, name='Kiddo'):
+    await ctx.send('Well ' + name + ' you didn\'t quite score a kill but im proud of you.' )
 
 @bot.command()
 #@commands.check(checkMushy)
