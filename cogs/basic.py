@@ -54,8 +54,10 @@ class Core_Bot(commands.Cog):
         print('request_list called')
         path = os.path.join('/share', 'Random', 'Discord', 'requests.txt')
         with open(path, 'r', encoding='utf-8') as file:
-            print(file.read())
-            await ctx.send(file.read())
+            file_data = file.read()
+            print(file_data)
+
+            await ctx.send(file_data)
 
 
 
