@@ -45,7 +45,9 @@ class Core_Bot(commands.Cog):
         path = os.path.join('/share', 'Random', 'Discord', 'requests.txt')
         with open(path, 'a+', encoding='utf-8') as file:
             for line in file:
+                print('request compare: ', request, line)
                 if request == line:
+                    await ctx.send(f'Request {request} already exists, check the list with \'using .request_list\'')
                     return
             file.write(f'{request}\n')
 
