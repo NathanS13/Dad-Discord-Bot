@@ -23,6 +23,7 @@ async def load():
 
 @bot.event
 async def on_ready():
+    print(os.path.join(os.getcwd(), 'cogs'))
     for file in os.listdir(os.path.join(os.getcwd(), 'cogs')):
         if file.endswith(".py"): 
             name = file[:-3]
