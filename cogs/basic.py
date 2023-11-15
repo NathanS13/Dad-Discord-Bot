@@ -43,11 +43,12 @@ class Core_Bot(commands.Cog):
         request = ctx.message.clean_content[len(ctx.prefix) + len(ctx.command.name):].strip()
         await ctx.send(f'Plex Request: {request}')
         path = os.path.join('/share', 'Random', 'Discord', 'requests.txt')
-        with open(path, 'a+', encoding='utf-8') as file:
+        with open(path, 'r+', encoding='utf-8') as file:
             for line in file:
                 print('request compare: ', request, line)
                 if request == line:
                     await ctx.send(f'Request {request} already exists, check the list with \'using .request_list\'')
+                    file.close()
                     return
             file.write(f'{request}\n')
 
