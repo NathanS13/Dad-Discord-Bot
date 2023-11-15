@@ -14,7 +14,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 
 intent = discord.Intents.all()
-bot = commands.Bot('!', intents=intent)
+bot = commands.Bot('.', intents=intent)
 
 @bot.event
 async def load():
