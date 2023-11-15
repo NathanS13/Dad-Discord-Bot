@@ -4,17 +4,14 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-cogs = [
-    'cogs.basic'
-]
-
-
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 
 intent = discord.Intents.all()
 bot = commands.Bot('.', intents=intent)
+
+linux_sys = True if 'posix' in os.name else False
 
 @bot.event
 async def load():
@@ -25,7 +22,7 @@ async def load():
 
 @bot.event
 async def on_ready():
-    for file in os.listdir(".\cogs"):
+    for file in os.listdir(os.path.join(os.getcwd(), 'cogs')):
         if file.endswith(".py"): 
             name = file[:-3]
             await bot.load_extension(f"cogs.{name}")
