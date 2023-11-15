@@ -40,11 +40,11 @@ class Core_Bot(commands.Cog):
 
     @commands.command(name='request')
     async def plex_request(self, ctx):
-        request = ctx.message.content
+        request = ctx.message.clean_content[len(ctx.prefix) + len(ctx.command.name):].strip()
         await ctx.send(f'Plex Request: {request}')
         path = os.path.join('/share', 'Random', 'Discord', 'requests.txt')
         with open(path, 'a+', encoding='utf-8') as file:
-            for line in file.read():
+            for line in file:
                 if ctx in line:
                     break
             file.write(f'{request}\n')
