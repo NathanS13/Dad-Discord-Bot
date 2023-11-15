@@ -50,7 +50,7 @@ class Core_Bot(commands.Cog):
             file.write(f'{request}\n')
 
     @commands.command(name='request_list')
-    async def plex_request(self, ctx):
+    async def plex_request_list(self, ctx):
         path = os.path.join('/share', 'Random', 'Discord', 'requests.txt')
         with open(path, 'a+', encoding='utf-8') as file:
             await ctx.send(file.read())
