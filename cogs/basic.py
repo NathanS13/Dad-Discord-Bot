@@ -46,7 +46,7 @@ class Core_Bot(commands.Cog):
         with open(path, 'a+', encoding='utf-8') as file:
             for line in file:
                 if request == line:
-                    break
+                    return
             file.write(f'{request}\n')
 
     @commands.command(name='request_list')
