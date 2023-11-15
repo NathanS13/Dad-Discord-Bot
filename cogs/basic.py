@@ -41,7 +41,7 @@ class Core_Bot(commands.Cog):
     @commands.command(name='request')
     async def plex_request(self, ctx):
         await ctx.send(f'Plex Request: {ctx}')
-        path = os.path.join('/share', 'Random', 'Discord')
+        path = os.path.join('/share', 'Random', 'Discord', 'requests')
         with open(path, 'a+', encoding='utf-8') as file:
             for line in file.read():
                 if ctx in line:
