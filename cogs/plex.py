@@ -37,17 +37,12 @@ class Plex_Bot(commands.Cog):
     #@commands.Cog.listen('plex_request')
     @commands.Cog.listener()
     async def alert_plex_admins(self, message):
-        print('two')
         channel = self.bot.get_channel(1146933704057442395) # aionions
         #channel = self.bot.get_channel(816437844507492365) #debug
         members = [118156033720844291, 118192661822832646] # aionios
         #members = [118156033720844291] # debug
 
         member_list = [channel.guild.get_member(member).mention for member in members]
-        #print(members)
-        #print(member_list)
-        #await channel.send(channel.guild.get_member(118156033720844291).mention)
-        #await channel.send(member_list[0])
         await channel.send(f"{' '.join(member_list)} New Movie request: {message}")
 
 async def setup(bot):
