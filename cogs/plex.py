@@ -45,5 +45,17 @@ class Plex_Bot(commands.Cog):
         member_list = [channel.guild.get_member(member).mention for member in members]
         await channel.send(f"{' '.join(member_list)} New Movie request: {message}")
 
+    @commands.command(name='subscribe')
+    async def plex_request_list(self, ctx):
+        print('subscribe new user')
+        path = os.path.join('/share', 'Random', 'Discord', 'Dad-Discord-Bot', 'shitty_boys.json')
+
+        with open(path, 'r', encoding='utf-8') as file:
+            file_data = file.read()
+            print(file_data)
+            await ctx.send(file_data)
+
+
+
 async def setup(bot):
     await bot.add_cog(Plex_Bot(bot))
