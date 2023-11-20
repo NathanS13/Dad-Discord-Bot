@@ -54,8 +54,8 @@ class Plex_Bot(commands.Cog):
 
     @commands.command(name='subscribe')
     async def subscribe_alert_request(self, ctx):
-        #channel = self.bot.get_channel(1146933704057442395)
-        channel = self.bot.get_channel(816437844507492365) #debug
+        channel = self.bot.get_channel(1146933704057442395)
+        #channel = self.bot.get_channel(816437844507492365) #debug
         print('subscribe new user')
         path = os.path.join(os.getcwd(), 'the_boys.json')
         if utils.replace_value(path, int(ctx.message.author.id), 'plex_tag', True):
@@ -63,8 +63,8 @@ class Plex_Bot(commands.Cog):
 
     @commands.command(name='unsubscribe')
     async def unsubscribe_alert_request(self, ctx):
-        #channel = self.bot.get_channel(1146933704057442395)
-        channel = self.bot.get_channel(816437844507492365) #debug
+        channel = self.bot.get_channel(1146933704057442395)
+        #channel = self.bot.get_channel(816437844507492365) #debug
         print('subscribe new user')
         path = os.path.join(os.getcwd(), 'the_boys.json')
         if utils.replace_value(path, int(ctx.message.author.id), 'plex_tag', False):
