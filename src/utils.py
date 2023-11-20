@@ -43,7 +43,7 @@ def replace_value(path: str, id, data_key, data_replace):
             return True
 
         return False
-    
+
 def batch_user_list(path: str, data_key, expected_data):
     '''
     Parses and returns Json data
@@ -56,9 +56,8 @@ def batch_user_list(path: str, data_key, expected_data):
         js_data = json.load(file)
 
         user_to_replace = [user['details']['discord_id'] for user in js_data['users'] if user['details'][data_key] == expected_data]
-        print(user_to_replace)
+        return user_to_replace
 
-        return False
 
 def main():
     print(parse_data(os.path.join(os.getcwd(), 'the_boys.json'), 118156033720844291, 'dob_year'))
@@ -71,8 +70,8 @@ def main():
     replace_value(os.path.join(os.getcwd(), 'the_boys.json'), 118156033720844291, 'dob_day2', 13)
     replace_value(os.path.join(os.getcwd(), 'the_boys.json'), 1181560337208442911, 'dob_day', 13)
 
-    replace_value(os.path.join(os.getcwd(), 'the_boys.json'), 118156033720844291, 'plex_tag', False)
     replace_value(os.path.join(os.getcwd(), 'the_boys.json'), 118156033720844291, 'plex_tag', True)
+    replace_value(os.path.join(os.getcwd(), 'the_boys.json'), 118156033720844291, 'plex_tag', False)
 
     batch_user_list(os.path.join(os.getcwd(), 'the_boys.json'), 'plex_tag', False)
     batch_user_list(os.path.join(os.getcwd(), 'the_boys.json'), 'plex_tag', True)

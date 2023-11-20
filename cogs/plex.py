@@ -42,18 +42,20 @@ class Plex_Bot(commands.Cog):
         channel = self.bot.get_channel(1146933704057442395) # aionions
         #channel = self.bot.get_channel(816437844507492365) #debug
         #members = [118156033720844291, 118192661822832646] # aionios
-        #members = [118156033720844291] # debug
+        #members = [118156033720844291, 118156033720844291] # debug
 
         path = os.path.join(os.getcwd(), 'the_boys.json')
         members = utils.batch_user_list(path, 'plex_tag', True)
+        #print('debug', members, len(members))
 
-        if len(members > 0):
+        if len(members) > 0:
             member_list = [channel.guild.get_member(member).mention for member in members]
             await channel.send(f"{' '.join(member_list)} New Movie request: {message}")
 
     @commands.command(name='subscribe')
     async def subscribe_alert_request(self, ctx):
-        channel = self.bot.get_channel(1146933704057442395)
+        #channel = self.bot.get_channel(1146933704057442395)
+        channel = self.bot.get_channel(816437844507492365) #debug
         print('subscribe new user')
         path = os.path.join(os.getcwd(), 'the_boys.json')
         if utils.replace_value(path, int(ctx.message.author.id), 'plex_tag', True):
@@ -61,7 +63,8 @@ class Plex_Bot(commands.Cog):
 
     @commands.command(name='unsubscribe')
     async def unsubscribe_alert_request(self, ctx):
-        channel = self.bot.get_channel(1146933704057442395)
+        #channel = self.bot.get_channel(1146933704057442395)
+        channel = self.bot.get_channel(816437844507492365) #debug
         print('subscribe new user')
         path = os.path.join(os.getcwd(), 'the_boys.json')
         if utils.replace_value(path, int(ctx.message.author.id), 'plex_tag', False):
