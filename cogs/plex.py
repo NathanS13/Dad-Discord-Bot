@@ -2,6 +2,8 @@ import os
 import asyncio
 from discord.ext import commands
 
+from src import utils
+
 class Plex_Bot(commands.Cog):
 
     def __init__(self, bot):
@@ -46,16 +48,20 @@ class Plex_Bot(commands.Cog):
         await channel.send(f"{' '.join(member_list)} New Movie request: {message}")
 
     @commands.command(name='subscribe')
-    async def plex_request_list(self, ctx):
+    async def subscribe_alert_request(self, ctx):
+        channel = self.bot.get_channel(1146933704057442395)
         print('subscribe new user')
-        path = os.path.join('/share', 'Random', 'Discord', 'Dad-Discord-Bot', 'shitty_boys.json')
+        path = os.path.join(os.getcwd(), 'the_boys.json')
+        if utils.replace_value(path, int(ctx.message.author.id), 'plex_tag', True):
+            await channel.send(f"{ctx.message.author.mention} You subcribed to nas alerts!")
 
-        with open(path, 'r', encoding='utf-8') as file:
-            file_data = file.read()
-            print(file_data)
-            await ctx.send(file_data)
-
-
+    @commands.command(name='unsubscribe')
+    async def unsubscribe_alert_request(self, ctx):
+        channel = self.bot.get_channel(1146933704057442395)
+        print('subscribe new user')
+        path = os.path.join(os.getcwd(), 'the_boys.json')
+        if utils.replace_value(path, int(ctx.message.author.id), 'plex_tag', False):
+            await channel.send(f"{ctx.message.author.mention} You unsubcribed from nas alerts!")
 
 async def setup(bot):
     await bot.add_cog(Plex_Bot(bot))
