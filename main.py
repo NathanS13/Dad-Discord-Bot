@@ -1,5 +1,6 @@
 import os
 import asyncio
+import traceback
 
 import discord
 from discord.ext import commands
@@ -17,17 +18,22 @@ linux_sys = True if 'posix' in os.name else False
 @bot.event
 async def load():
     for file in os.listdir(".\cogs"):
-        if file.endswith(".py"): 
+        if file.endswith(".py"):
             name = file[:-3]
             await bot.load_extension(f"cogs.{name}")
 
 @bot.event
 async def on_ready():
-    print(os.path.join(os.getcwd(), 'cogs'))
-    for file in os.listdir(os.path.join(os.getcwd(), 'cogs')):
-        if file.endswith(".py"): 
-            name = file[:-3]
-            await bot.load_extension(f"cogs.{name}")
+    try:
+        print(os.path.join(os.getcwd(), 'cogs'))
+        for file in os.listdir(os.path.join(os.getcwd(), 'cogs')):
+            if file.endswith(".py"): 
+                name = file[:-3]
+                await bot.load_extension(f"cogs.{name}")
+    except Exception as e:
+        traceback_str = traceback.format_exc(limit=10)
+        print("ERROR!", e)
+        print(traceback_str)
 
 
 # Command to respond with "Pong!"
@@ -38,7 +44,12 @@ async def ping(ctx):
 
 async def main():
     #await load()
-    await bot.start(TOKEN)
+    try:
+        await bot.start(TOKEN)
+    except Exception as e:
+        traceback_str = traceback.format_exc(limit=10)
+        print("ERROR!", e)
+        print(traceback_str)
 
 
 if __name__ == "__main__":
