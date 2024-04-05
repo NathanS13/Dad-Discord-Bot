@@ -1,5 +1,6 @@
 # Reference: https://github.com/Rapptz/discord.py/blob/master/examples/basic_voice.py
 import os
+import shutil
 import asyncio
 import youtube_dl
 import discord
@@ -27,6 +28,8 @@ ffmpeg_options = {
 }
 
 ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
+
+#BASE_DIR = os.path.join('/misc')
 
 class YTDLSource(discord.PCMVolumeTransformer):
     def __init__(self, source, *, data, volume=0.5):
@@ -90,6 +93,8 @@ class Music_Bot(commands.Cog):
 
             async with ctx.typing():
                 filename = await YTDLSource.from_url(url, loop=self.bot.loop)
+                filename = shutil.move(filename, os.path.join('/misc', 'music', filename))
+                print('New file path', filename)
                 voice_channel.play(discord.FFmpegPCMAudio(executable="ffmpeg", source=filename))
             await ctx.send('**Now playing:** {}'.format(filename))
         except Exception as e:
