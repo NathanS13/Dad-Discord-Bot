@@ -14,7 +14,7 @@ class Plex_Bot(commands.Cog):
     async def plex_request(self, ctx):
         request = ctx.message.clean_content[len(ctx.prefix) + len(ctx.command.name):].strip()
         await ctx.send(f'Plex Request: {request}')
-        path = os.path.join('/share', 'Random', 'Discord', 'requests.txt') if 'posix' in os.name \
+        path = os.path.join('/misc', 'requests.txt') if 'posix' in os.name \
             else os.path.join(os.getcwd(), 'request.txt')
         print(path)
         with open(path, 'r+', encoding='utf-8') as file:
@@ -30,7 +30,7 @@ class Plex_Bot(commands.Cog):
     @commands.command(name='request_list')
     async def plex_request_list(self, ctx):
         print('request_list called')
-        path = os.path.join('/share', 'Random', 'Discord', 'requests.txt')
+        path = os.path.join('/misc', 'requests.txt')
         with open(path, 'r', encoding='utf-8') as file:
             file_data = file.read()
             print(file_data)

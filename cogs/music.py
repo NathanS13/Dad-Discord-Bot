@@ -90,7 +90,7 @@ class Music_Bot(commands.Cog):
 
             async with ctx.typing():
                 filename = await YTDLSource.from_url(url, loop=self.bot.loop)
-                voice_channel.play(discord.FFmpegPCMAudio(executable="ffmpeg.exe", source=filename))
+                voice_channel.play(discord.FFmpegPCMAudio(executable="ffmpeg", source=filename))
             await ctx.send('**Now playing:** {}'.format(filename))
         except Exception as e:
             await ctx.send("The bot is not connected to a voice channel.", e)
