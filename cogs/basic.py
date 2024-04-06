@@ -7,7 +7,7 @@ import traceback
 class Core_Bot(commands.Cog):
 
     def __init__(self, bot):
-        print('init')
+        print('init basic bot')
         self.bot = bot
 
     @commands.Cog.listener()

@@ -3,7 +3,7 @@ from discord.ext import commands
 class Albion_Tracker(commands.Cog):
 
     def __init__(self, bot):
-        print('init')
+        print('init albion bot')
         self.bot = bot
 
 #   @commands.command(name='ping2')

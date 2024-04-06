@@ -7,7 +7,7 @@ from src import utils
 class Plex_Bot(commands.Cog):
 
     def __init__(self, bot):
-        print('init')
+        print('init plex bot')
         self.bot = bot
 
     @commands.command(name='request')
