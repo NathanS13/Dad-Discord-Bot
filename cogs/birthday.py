@@ -56,8 +56,8 @@ class Birthday_Bot(commands.Cog):
 
         return birthday_list
         
-    @commands.command(name='birthday')
-    async def birthday_test(self):
+    @commands.command(name='birthday6')
+    async def birthday_test(self, ctx):
         self.check_birthdays()
 
 async def setup(bot):
