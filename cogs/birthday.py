@@ -11,22 +11,22 @@ class Birthday_Bot(commands.Cog):
         print('init')
         self.bot = bot
 
-    @commands.command(name='request')
-    async def plex_request(self, ctx):
-        request = ctx.message.clean_content[len(ctx.prefix) + len(ctx.command.name):].strip()
-        await ctx.send(f'Plex Request: {request}')
-        path = os.path.join('/misc', 'requests.txt') if 'posix' in os.name \
-            else os.path.join(os.getcwd(), 'request.txt')
-        print(path)
-        with open(path, 'r+', encoding='utf-8') as file:
-            for line in file:
-                #print('request compare: ', request, line)
-                if request == line.strip():
-                    await ctx.send(f'Request {request} already exists, check the list with \'.request_list\'')
-                    file.close()
-                    return
-            file.write(f'{request}\n')
-            await self.alert_plex_admins(request)
+    #@commands.command(name='request')
+    #async def plex_request(self, ctx):
+    #    request = ctx.message.clean_content[len(ctx.prefix) + len(ctx.command.name):].strip()
+    #    await ctx.send(f'Plex Request: {request}')
+    #    path = os.path.join('/misc', 'requests.txt') if 'posix' in os.name \
+    #        else os.path.join(os.getcwd(), 'request.txt')
+    #    print(path)
+    #    with open(path, 'r+', encoding='utf-8') as file:
+    #        for line in file:
+    #            #print('request compare: ', request, line)
+    #            if request == line.strip():
+    #                await ctx.send(f'Request {request} already exists, check the list with \'.request_list\'')
+    #                file.close()
+    #                return
+    #        file.write(f'{request}\n')
+    #        await self.alert_plex_admins(request)
 
     @tasks.loop(hours=1)
     async def birthday_check(self):
@@ -57,10 +57,8 @@ class Birthday_Bot(commands.Cog):
         return birthday_list
         
     @commands.command(name='birthday')
-    async def birthday_Test(self):
+    async def birthday_test(self):
         self.check_birthdays()
-
-
 
 async def setup(bot):
     await bot.add_cog(Birthday_Bot(bot))
