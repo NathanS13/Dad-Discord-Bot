@@ -12,13 +12,15 @@ class Core_Bot(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        channel = self.bot.get_channel(879557800806727771) # aionions
+        channel = self.bot.get_channel(348996870434979841) # aionions
         print(f'{member} has joined the server.')
-        await channel.send('Welcome to the server kiddo! {member} Make us proud')
+        await channel.send(f'Welcome to the server kiddo! {member} Make us proud!')
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
+        channel = self.bot.get_channel(348996870434979841) # aionions
         print(f'{member} has left the server.')
+        await channel.send(f'See ya later kiddo! {member}')
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):

@@ -55,17 +55,24 @@ def batch_user_list(path: str, data_key, expected_data):
     with open(path, 'r', encoding='utf-8') as file:
         js_data = json.load(file)
 
-        user_to_replace = [user['details']['discord_id'] for user in js_data['users'] if user['details'][data_key] == expected_data]
-        return user_to_replace
+        if expected_data:
+            user_to_replace = [user['details']['discord_id'] for user in js_data['users'] if user['details'][data_key] == expected_data]
+            return user_to_replace
+        else:
+            user_to_replace = [user['details']['discord_id'] for user in js_data['users'] if user['details'][data_key]]
+            return user_to_replace
 
 
 def main():
+    print('parse_data')
     print(parse_data(os.path.join(os.getcwd(), 'the_boys.json'), 118156033720844291, 'dob_year'))
     print(parse_data(os.path.join(os.getcwd(), 'the_boys.json'), 118156033720844291, 'dob_month'))
     print(parse_data(os.path.join(os.getcwd(), 'the_boys.json'), 118156033720844291, 'dob_day'))
     print(parse_data(os.path.join(os.getcwd(), 'the_boys.json'), 118156033720844291, 'key_not working!'))
 
+    print('replace_value')
     #print(replace_value(os.path.join(os.getcwd(), 'the_boys.json'), 118156033720844291, 'key_not working!'))
+    replace_value(os.path.join(os.getcwd(), 'the_boys.json'), 118156033720844291, 'dob_day', 13)
     replace_value(os.path.join(os.getcwd(), 'the_boys.json'), 118156033720844291, 'dob_day', 13)
     replace_value(os.path.join(os.getcwd(), 'the_boys.json'), 118156033720844291, 'dob_day2', 13)
     replace_value(os.path.join(os.getcwd(), 'the_boys.json'), 1181560337208442911, 'dob_day', 13)
@@ -73,8 +80,10 @@ def main():
     replace_value(os.path.join(os.getcwd(), 'the_boys.json'), 118156033720844291, 'plex_tag', True)
     replace_value(os.path.join(os.getcwd(), 'the_boys.json'), 118156033720844291, 'plex_tag', False)
 
-    batch_user_list(os.path.join(os.getcwd(), 'the_boys.json'), 'plex_tag', False)
-    batch_user_list(os.path.join(os.getcwd(), 'the_boys.json'), 'plex_tag', True)
+    print('batch_user_list')
+    print(batch_user_list(os.path.join(os.getcwd(), 'the_boys.json'), 'plex_tag', False))
+    print(batch_user_list(os.path.join(os.getcwd(), 'the_boys.json'), 'plex_tag', True))
+    print(batch_user_list(os.path.join(os.getcwd(), 'the_boys.json'), 'discord_id', None))
 
 
 if __name__ == '__main__':

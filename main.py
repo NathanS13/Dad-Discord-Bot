@@ -14,6 +14,7 @@ intent = discord.Intents.all()
 bot = commands.Bot('.', intents=intent)
 
 linux_sys = True if 'posix' in os.name else False
+os.chdir(os.path.join('/misc', 'Dad-Discord-Bot'))
 
 @bot.event
 async def load():

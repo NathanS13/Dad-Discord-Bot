@@ -17,9 +17,9 @@
         "discord_id": 118156033720844291,
         "dob_year": 1995,
         "dob_month": 2,
-        "dob_day": 13,
+        "dob_day": 14,
         "age": 28,
-        "plex_tag": true
+        "plex_tag": false
       }
     },
     {
@@ -195,6 +195,83 @@
         "dob_month": 10,
         "dob_day": 22,
         "age": 37,
+        "plex_tag": false
+      }
+    },
+    {
+      "alias": "incoming",
+      "details": {
+        "discord_id": 328702355153354752,
+        "dob_year": 1989,
+        "dob_month": 2,
+        "dob_day": 9,
+        "age": 35,
+        "plex_tag": false
+      }
+    },
+    {
+      "alias": "barbiechette",
+      "details": {
+        "discord_id": 356581501992960001,
+        "dob_year": 1992,
+        "dob_month": 7,
+        "dob_day": 11,
+        "age": 32,
+        "plex_tag": false
+      }
+    },
+    {
+      "alias": "bev",
+      "details": {
+        "discord_id": 807473949205987340,
+        "dob_year": 1990,
+        "dob_month": 9,
+        "dob_day": 17,
+        "age": 33,
+        "plex_tag": false
+      }
+    },
+    {
+      "alias": "sterling",
+      "details": {
+        "discord_id": 173989606700744705,
+        "dob_year": 1993,
+        "dob_month": 7,
+        "dob_day": 1,
+        "age": 30,
+        "plex_tag": false
+      }
+    },
+    {
+      "alias": "sophie",
+      "details": {
+        "discord_id": 328783861867872257,
+        "dob_year": 1997,
+        "dob_month": 10,
+        "dob_day": 6,
+        "age": 26,
+        "plex_tag": false
+      }
+    },
+    {
+      "alias": "ehbud",
+      "details": {
+        "discord_id": 382400089458475009,
+        "dob_year": 1988,
+        "dob_month": 12,
+        "dob_day": 15,
+        "age": 26,
+        "plex_tag": false
+      }
+    },
+    {
+      "alias": "paul",
+      "details": {
+        "discord_id": 984835388772327444,
+        "dob_year": 1990,
+        "dob_month": 1,
+        "dob_day": 24,
+        "age": 26,
         "plex_tag": false
       }
     }
