@@ -13,7 +13,7 @@ youtube_dl.utils.bug_reports_message = lambda: ''
 ytdl_format_options = {
     'format': 'bestaudio/best',
     'restrictfilenames': True,
-    'noplaylist': True,
+    'noplaylist': False,
     'nocheckcertificate': True,
     'ignoreerrors': False,
     'logtostderr': False,
@@ -42,10 +42,16 @@ class YTDLSource(discord.PCMVolumeTransformer):
     async def from_url(cls, url, *, loop=None, stream=False):
         loop = loop or asyncio.get_event_loop()
         data = await loop.run_in_executor(None, lambda: ytdl.extract_info(url, download=not stream))
+        filename = []
         if 'entries' in data:
             # take first item from a playlist
-            data = data['entries'][0]
-        filename = data['title'] if stream else ytdl.prepare_filename(data)
+            #data = data['entries'][0]
+            for entry in data['entries']:
+                filename.append(ytdl.prepare_filename(entry))
+        else:
+            filename = [data['title'] if stream else ytdl.prepare_filename(data)]
+        print('DEBUG:', filename)
+
         return filename
 
 class Music_Bot(commands.Cog):
@@ -93,12 +99,24 @@ class Music_Bot(commands.Cog):
 
             async with ctx.typing():
                 filename = await YTDLSource.from_url(url, loop=self.bot.loop)
-                filename = shutil.move(filename, os.path.join('/misc', 'music', filename))
-                print('New file path', filename)
-                voice_channel.play(discord.FFmpegPCMAudio(executable="ffmpeg", source=filename))
-            await ctx.send('**Now playing:** {}'.format(filename))
+                filename_moved = []
+                for x, file_n in enumerate(filename):
+                    filename_moved.append(shutil.move(file_n, os.path.join('/misc', 'music', file_n)))
+                    print('New file path', filename_moved[x])
+                    voice_channel.play(discord.FFmpegPCMAudio(executable="ffmpeg", source=filename_moved[x]))
+                    await ctx.send('**Now playing:** {}'.format(filename_moved[x].split('/')[-1]))
+                    while voice_channel.is_playing():
+                        await asyncio.sleep(1)
         except Exception as e:
+            print(e)
             await ctx.send("The bot is not connected to a voice channel.", e)
+
+    @commands.command(name='skip', help='To skip a song')
+    async def skip(self, ctx):
+        """skips the song playing"""
+        server = ctx.message.guild
+        voice_channel = server.voice_client
+        voice_channel.stop()
 
     @commands.command(name='yt')
     async def yt(self, ctx, *, url):
