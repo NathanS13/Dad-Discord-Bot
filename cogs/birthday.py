@@ -10,7 +10,7 @@ utc = datetime.timezone.utc
 # If no tzinfo is given then UTC is assumed.
 times = [
     datetime.time(hour=13, tzinfo=utc),
-    #datetime.time(hour=22, minute=54, tzinfo=utc),
+    #datetime.time(hour=22, minute=13, tzinfo=utc),
     #datetime.time(hour=16, minute=40, second=30, tzinfo=utc)
 ]
 
