@@ -3,6 +3,7 @@ import os
 import shutil
 import asyncio
 import youtube_dl
+from pytube import Playlist
 import discord
 
 from discord.ext import commands
@@ -72,6 +73,7 @@ class Music_Bot(commands.Cog):
     def __init__(self, bot):
         print('init music_bot')
         self.bot = bot
+        self._playlist = []
 
     @commands.command(name='ping3')
     async def ping3(self, ctx):
@@ -110,14 +112,20 @@ class Music_Bot(commands.Cog):
             voice_channel = server.voice_client
             #voice_channel = ctx.message.guild.voice_client
 
-            async with ctx.typing():
+            playlist = Playlist(url)
+            print('Number Of Videos In playlist: ', len(playlist.video_urls))
+            print(playlist)
+            for url in playlist:
+                #urls.append(url)
                 filename = await YTDLSource.from_url(url, loop=self.bot.loop)
                 filename_moved = []
                 for x, file_n in enumerate(filename):
                     filename_moved.append(shutil.move(file_n, os.path.join('/misc', 'music', file_n)))
                     print('New file path', filename_moved[x])
+                    print('DEBUG@', file_n['title'])
                     voice_channel.play(discord.FFmpegPCMAudio(executable="ffmpeg", source=filename_moved[x]))
-                    await ctx.send('**Now playing:** {}'.format(filename_moved[x].split('/')[-1]))
+                    async with ctx.typing():
+                        await ctx.send('**Now playing:** {}'.format(filename_moved[x].split('/')[-1]))
                     while voice_channel.is_playing():
                         await asyncio.sleep(1)
         except Exception as e:
