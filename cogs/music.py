@@ -111,10 +111,12 @@ class Music_Bot(commands.Cog):
             server = ctx.message.guild
             voice_channel = server.voice_client
             #voice_channel = ctx.message.guild.voice_client
-
-            playlist = Playlist(url)
-            print('Number Of Videos In playlist: ', len(playlist.video_urls))
-            print(playlist)
+            if 'list' in url or 'index' in url:
+                playlist = Playlist(url)
+                print('Number Of Videos In playlist: ', len(playlist.video_urls))
+                print(playlist)
+            else:
+                playlist = [url]
             for url in playlist:
                 #urls.append(url)
                 filename = await YTDLSource.from_url(url, loop=self.bot.loop)
@@ -122,7 +124,6 @@ class Music_Bot(commands.Cog):
                 for x, file_n in enumerate(filename):
                     filename_moved.append(shutil.move(file_n, os.path.join('/misc', 'music', file_n)))
                     print('New file path', filename_moved[x])
-                    print('DEBUG@', file_n['title'])
                     voice_channel.play(discord.FFmpegPCMAudio(executable="ffmpeg", source=filename_moved[x]))
                     async with ctx.typing():
                         await ctx.send('**Now playing:** {}'.format(filename_moved[x].split('/')[-1]))
