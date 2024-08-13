@@ -96,6 +96,19 @@ class Music_Bot(commands.Cog):
         except Exception as e:
             print(e)
 
+    @commands.command(name='leave')
+    async def leave(self, ctx):
+        print('leave command')
+        try:
+            if not ctx.voice_client:
+                await ctx.send("Not connected to a voice channel")
+                return
+            else:
+                await ctx.send("Disconnecting..")
+                await ctx.voice_client.disconnect()
+        except Exception as e:
+            print(e)
+
     @commands.command(name='play2')
     async def play2(self, ctx, *, query):
         """Plays a file from the local filesystem"""
