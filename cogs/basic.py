@@ -12,15 +12,39 @@ class Core_Bot(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        channel = self.bot.get_channel(348996870434979841) # aionions
-        print(f'{member} has joined the server.')
-        await channel.send(f'Welcome to the server kiddo! {member} Make us proud!')
+        guild = member.guild
+        # Ensure the member is actually in the guild (though they should be, since on_member_join is triggered)
+
+        if guild.id == 142429160327872512 and guild.get_member(member.id) is not None:
+            channel = self.bot.get_channel(348996870434979841)  # aionions
+            print(f'{member} has joined the server.')
+            await channel.send(f'Welcome to the server kiddo! {member.mention} Make us proud!')
+
+            # Find the role by name or ID
+            role = guild.get_role(172887735625842688)  # Replace ROLE_ID with the actual role ID or get it by name
+
+            if role is not None:
+                try:
+                    # Assign the role to the member
+                    await member.add_roles(role)
+                    print(f"Assigned {role.name} role to {member.display_name}")
+                except Exception as e:
+                    print(f"Failed to assign role: {e}")
+            else:
+                print("Role not found.")
+
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
-        channel = self.bot.get_channel(348996870434979841) # aionions
-        print(f'{member} has left the server.')
-        await channel.send(f'See ya later kiddo! {member}')
+        guild = member.guild  # Get the guild from which the member is removed
+        if guild.id == 142429160327872512 and guild.get_member(member.id) is None:
+            channel = self.bot.get_channel(348996870434979841)  # aionions
+            print(f'{member} has left the server.')
+            await channel.send(f'See ya later {member} !')
+        else:
+            print(f"{member} is still in the guild.")
+
+
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
