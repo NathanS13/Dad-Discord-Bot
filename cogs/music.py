@@ -5,8 +5,10 @@ import asyncio
 import youtube_dl
 from pytube import Playlist
 import discord
+import yt_dlp
+import json
 
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 
 youtube_dl.utils.bug_reports_message = lambda: ''
@@ -28,52 +30,26 @@ ffmpeg_options = {
     'options': '-vn'
 }
 
-ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
+ydl_opts = {
+    'format': 'm4a/bestaudio/best',
+    # ℹ️ See help(yt_dlp.postprocessor) for a list of available Postprocessors and their arguments
+    'postprocessors': [{  # Extract audio using ffmpeg
+        'key': 'FFmpegExtractAudio',
+        'preferredcodec': 'm4a',
+    }]
+}
 
-#BASE_DIR = os.path.join('/misc')
 
-class YTDLSource(discord.PCMVolumeTransformer):
-    def __init__(self, source, *, data, volume=0.5):
-        super().__init__(source, volume)
-        self.data = data
-        self.title = data.get('title')
-        self.url = ""
-
-    @classmethod
-    async def from_url(cls, url, *, loop=None, stream=False):
-        loop = loop or asyncio.get_event_loop()
-        
-        data = await loop.run_in_executor(None, lambda: ytdl.extract_info(url, download=not stream))
-
-        filename = []
-        if not stream:
-            if 'entries' in data:
-                # take first item from a playlist
-                #data = data['entries'][0]
-                for entry in data['entries']:
-                    filename.append(ytdl.prepare_filename(entry))
-            else:
-                filename = [ytdl.prepare_filename(data)]
-
-            return filename
-
-        elif stream:
-            if 'entries' in data:
-                for entry in data['entries']:
-                    source = entry['url']
-                    filename.append(cls(discord.FFmpegPCMAudio(source, **ffmpeg_options), data=data))
-            else:
-                filename = [cls(discord.FFmpegPCMAudio(data['url'], **ffmpeg_options), data=data)]
-            return filename
-
-        
 
 class Music_Bot(commands.Cog):
 
     def __init__(self, bot):
         print('init music_bot')
         self.bot = bot
-        self._playlist = []
+        self._playlist_play = []
+        self._voice_channel = None
+        self._ctx = None
+        
 
     @commands.command(name='ping3')
     async def ping3(self, ctx):
@@ -108,6 +84,81 @@ class Music_Bot(commands.Cog):
                 await ctx.voice_client.disconnect()
         except Exception as e:
             print(e)
+
+    @commands.command(name='play3')
+    async def play3(self, ctx, url):
+        """Plays a file from the local filesystem"""
+        try :
+            await self.join(ctx)
+            server = ctx.message.guild
+            voice_channel = server.voice_client
+            if self._voice_channel is None:
+                print('2222222222222222222 ', type(self._voice_channel), type(voice_channel))
+                self._voice_channel = voice_channel # @TODO FIX THIS! trash code 
+                self.play_music.start()
+            if self._ctx is None:
+                self._ctx = ctx
+            #voice_channel = ctx.message.guild.voice_client
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                info = ydl.extract_info(url, download=True)
+                if not ydl._download_retcode:
+                    #print(json.dumps(ydl.sanitize_info(info)))
+                    _json_info = json.loads(json.dumps(ydl.sanitize_info(info)))
+                    _json_info_debug = json.dumps(ydl.sanitize_info(info), indent=4)
+                    with open('temp.json', 'w') as file:
+                        file.write(_json_info_debug)
+
+                    _file_path = []
+                    _playlist = _json_info['entries'] if 'entries' in _json_info else None
+                    if _playlist:
+                        for song in _playlist:
+                            async with ctx.typing():
+                                await ctx.send('**Successfully Downloaded:** {}'.format(song['title']))
+                        for song in _playlist:
+                            _file_path.append(song['requested_downloads'][0]['filepath'])
+                            print('DEBUG: ', _file_path)
+                    else:
+                        _file_path.append(_json_info['requested_downloads'][0]['filepath'])
+                        print('DEBUG: ', _file_path)
+                        async with ctx.typing():
+                            await ctx.send('**Successfully Downloaded:** {}'.format(_json_info['title']))
+
+                    for song in _file_path:
+                        new_path = song.replace('Dad-Discord-Bot', 'music')
+                        shutil.move(song, new_path)
+                        print('moved ', song , ' to ', new_path)
+                        self._playlist_play.append(new_path)
+
+                    if len(self._playlist_play) > 0 and not self._voice_channel.is_playing():
+                        print('???????????????')
+                        await self.play_music()
+
+        except Exception as e:
+            print(e)
+            await ctx.send("The bot is not connected to a voice channel.", e)
+
+    @tasks.loop(seconds=10)
+    async def play_music(self):
+        if len(self._playlist_play) > 0 and not self._voice_channel.is_playing():
+            await self.join(self._ctx)
+            for song in self._playlist_play:
+                self._voice_channel.play(discord.FFmpegPCMAudio(executable="ffmpeg", source=song))
+                async with self._ctx.typing():
+                    await self._ctx.send('**Now playing:** {}'.format(song.split('/')[-1]))
+                while self._voice_channel.is_playing():
+                    await asyncio.sleep(1)
+
+    @commands.command(name='list')
+    async def list(self, ctx):
+        if len(self._playlist_play) == 0:
+            print('playlist is empty')
+            await ctx.send('**Playlist is empty!**')
+            return
+        list_ret = '\n'.join([f"{i+1}. {path.split('/')[-1]}" for i, path in enumerate(self._playlist_play) while i < 5])
+        print(list_ret)
+        async with ctx.typing():
+            await ctx.send('**Playlist:**')
+            await ctx.send('{}'.format(list_ret))
 
     @commands.command(name='play2')
     async def play2(self, ctx, *, query):
